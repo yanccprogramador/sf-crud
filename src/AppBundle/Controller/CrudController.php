@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Doctrine\Bundle\DoctrineBundle\Entity\Frases;
+
+use AppBundle\Entity\Frases;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CrudController extends Controller
 {
@@ -28,12 +31,26 @@ class CrudController extends Controller
     public function salvar(Request $request){
         $em=$this->getDoctrine()->getManager();
         $frases=new Frases();
-        $frases=$request;
+        $frases->setFrase($request->get('fraseSalvar'));
         $em->persist($frases);
 
         $em->flush();
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig');
+        return $this->redirectToRoute('homepage');
+    }
+    /**
+     * @Route("/apagar/{id}", name="apagando")
+     */
+    public function apagar($id){
+        $em=$this->getDoctrine()->getManager();
+        $frase=new Frases();
+        $em2= $this->getDoctrine()
+            ->getRepository(Frases::class);
+        $frase=$em2->find($id);
+        $em->remove($frase);
+        $em->flush();
+
+        return $this->redirectToRoute('homepage');
     }
 
 }

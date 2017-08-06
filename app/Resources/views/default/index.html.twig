@@ -7,15 +7,16 @@
         <div class="col-md-6">
             <h1>Crud</h1>
             <form method="post" action="/salvar">
-                <input type="text" class="form-control" placeholder="Frase a ser salva"/>
+                <input type="text" class="form-control" name="fraseSalvar" placeholder="Frase a ser salva"/>
                 <input type="submit" class="btn btn-default">
             </form>
             <table class="table">
                 <thead><tr><td>Frases</td></tr></thead>
                 <tbody>
-                  {%   for Frase in frases %}
+                  {%   for frase in frases %}
                     <tr>
-                        {{ Frase->frase }}
+                        <td>{{ frase.frase }}</td>
+                        <td><a class="btn btn-danger" href="/apagar/{{ frase.id }}">Apagar</a></td>
                     </tr>
                   {% endfor %}
                 </tbody>
